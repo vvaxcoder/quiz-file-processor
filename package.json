@@ -23,6 +23,8 @@
     "@nestjs/common": "^11.0.1",
     "@nestjs/core": "^11.0.1",
     "@nestjs/platform-express": "^11.0.1",
+    "@types/adm-zip": "^0.5.7",
+    "@types/fs-extra": "^11.0.4",
     "adm-zip": "^0.5.16",
     "fast-xml-parser": "^5.3.3",
     "fs-extra": "^11.3.3",
