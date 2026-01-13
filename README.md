@@ -31,6 +31,11 @@
 $ pnpm install
 ```
 
+# Run application
+```bash
+pnpm process ./example/smeshnay1.siq
+```
+
 ## Compile and run the project
 
 ```bash
@@ -56,6 +61,8 @@ $ pnpm run test:e2e
 # test coverage
 $ pnpm run test:cov
 ```
+
+If you want to see console.log in tests, you should run it wuth flag --verbose OR --runInBand.
 
 ## Deployment
 

@@ -13,9 +13,15 @@ async function bootstrap() {
     process.exit(1);
   }
 
-  const output = await fileService.processFile(filePath);
-  console.log(`✅ Process complete! JSON saved at: ${output}`);
-  await app.close();
+  try {
+    const output = await fileService.processFile(filePath);
+    console.log(`Process complete! JSON saved at: ${output}`);
+  } catch (err) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    console.error('Error processing file:', err.message);
+  } finally {
+    await app.close();
+  }
 }
 
 bootstrap();
