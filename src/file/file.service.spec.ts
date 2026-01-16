@@ -31,4 +31,6 @@ describe('Test FileService', () => {
     expect(renamed).toBe(expectedNewPath);
     expect(await fs.pathExists(expectedNewPath)).toBe(true);
   });
+
+  it('should call unzipFile .zip to same folder', async () => {});
 });

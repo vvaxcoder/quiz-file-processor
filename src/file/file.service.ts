@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import AdmZip from 'adm-zip';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 
@@ -32,22 +33,36 @@ export class FileService {
     return newPath;
   }
 
+  /**
+   * Unzip .zip -> to same folder
+   * Return unzipped folder
+   */
+  async unzipFile(zipPath: string, destDir: string): Promise<string> {
+    const zip = new AdmZip(zipPath);
+    zip.extractAllTo(destDir, true);
+    const files = await fs.readdir(destDir);
+    return path.join(destDir, files[0]);
+  }
+
+  // async parseXmlToJson(filePath: string): Promise<any> {
+  //   const xmlData = await fs.readFile(filePath, 'utf-8');
+  //   const parser = new XMLParser({ ignoreAttributes: false });
+  //   return parser.parse(xmlData);
+  // }
+
+  // async writeJson(data: any, outputPath: string): Promise<void> {
+  //   await fs.writeJson(outputPath, data, { spaces: 2 });
+  // }
+
   async processFile(filePath: string): Promise<string> {
     const baseName = path.basename(filePath);
     const exampleSiq = path.join(process.cwd(), 'example', baseName);
     const workDir = path.join(process.cwd(), 'tmp');
     await fs.ensureDir(workDir);
-
     const renamedFile = await this.renameSqiToZip(exampleSiq);
-    console.log('renamedFile = ', renamedFile);
-
-    // const zipPath = path.join(workDir, `${baseName}.zip`);
-    // const extractedDir = path.join(workDir, 'unzipped');
     const jsonOutput = path.join(workDir, `${path.parse(baseName).name}.json`);
-
-    // const buffer = await this.readFile(filePath);
-    // await this.zipFile(buffer, baseName, zipPath);
-    // const extractedFile = await this.unzipFile(zipPath, extractedDir);
+    const extractedFile = await this.unzipFile(renamedFile, workDir);
+    console.log('extractedFile = ', extractedFile);
     // const jsonData = await this.parseXmlToJson(extractedFile);
     // await this.writeJson(jsonData, jsonOutput);
 
