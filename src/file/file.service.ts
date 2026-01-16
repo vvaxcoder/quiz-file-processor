@@ -38,6 +38,9 @@ export class FileService {
    * Return unzipped folder
    */
   async unzipFile(zipPath: string, destDir: string): Promise<string> {
+    if (!(await fs.pathExists(zipPath)))
+      throw new Error(`Zip file not found: ${zipPath}`);
+
     const zip = new AdmZip(zipPath);
     zip.extractAllTo(destDir, true);
     const files = await fs.readdir(destDir);
@@ -61,6 +64,7 @@ export class FileService {
     await fs.ensureDir(workDir);
     const renamedFile = await this.renameSqiToZip(exampleSiq);
     const jsonOutput = path.join(workDir, `${path.parse(baseName).name}.json`);
+    // const extractedFile = await this.unzipFile(renamedFile, workDir);
     const extractedFile = await this.unzipFile(renamedFile, workDir);
     console.log('extractedFile = ', extractedFile);
     // const jsonData = await this.parseXmlToJson(extractedFile);
